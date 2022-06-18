@@ -1,0 +1,39 @@
+version : '3'
+
+services:
+  haproxy:
+    image: haproxy:alpine
+    container_name: haproxy
+    restart: always
+    depends_on:
+      - instance1
+      - instance2
+      - instance3
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+    ports:
+      - "80:80"
+
+  instance1:
+    build: ./service
+    command: "5000"
+    ports:
+      - "5000:5000"
+    expose:
+      - 5000
+
+  instance2:
+    build: ./service
+    command: "5001"
+    ports:
+      - "5001:5001"
+    expose:
+      - 5001
+
+  instance3:
+    build: ./service
+    command: "5002"
+    ports:
+      - "5002:5002"
+    expose:
+      - 5002
