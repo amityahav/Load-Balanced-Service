@@ -7,7 +7,6 @@ RUN set -ex &&\
       musl-dev \
       git
 ENV GO111MODULE=on
-ENV GOPRIVATE=*.outbrain.com
 
 WORKDIR /app
 COPY . .
