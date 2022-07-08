@@ -13,7 +13,6 @@ func main() {
 	port := os.Args[1]
 	logger := log.New(os.Stdout, "api", log.LstdFlags)
 	server := api.NewAPI(port)
-
 	logger.Printf("Server is listening at port: %s", port)
 	logger.Fatal(server.ListenAndServe())
 
