@@ -19,6 +19,8 @@ type User struct {
 	Username string `json:"username,omitempty"`
 	// Password holds the value of the "password" field.
 	Password string `json:"password,omitempty"`
+	// Salt holds the value of the "salt" field.
+	Salt []byte `json:"salt,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -26,6 +28,8 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case user.FieldSalt:
+			values[i] = new([]byte)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
 		case user.FieldUsername, user.FieldPassword:
@@ -63,6 +67,12 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				u.Password = value.String
 			}
+		case user.FieldSalt:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field salt", values[i])
+			} else if value != nil {
+				u.Salt = *value
+			}
 		}
 	}
 	return nil
@@ -95,6 +105,8 @@ func (u *User) String() string {
 	builder.WriteString(u.Username)
 	builder.WriteString(", password=")
 	builder.WriteString(u.Password)
+	builder.WriteString(", salt=")
+	builder.WriteString(fmt.Sprintf("%v", u.Salt))
 	builder.WriteByte(')')
 	return builder.String()
 }

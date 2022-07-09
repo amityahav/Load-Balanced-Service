@@ -13,7 +13,8 @@ func NewAPI(port string) *http.Server {
 	// Routes
 	mux := http.NewServeMux()
 	mux.Handle("/", handlers.NewGreetingHandler(port, repoAPI))
-	mux.Handle("/register", handlers.NewRegisterHandler(port, repoAPI))
+	mux.Handle("/register", handlers.NewRegisterHandler(repoAPI))
+	mux.Handle("/login", handlers.NewLoginHandler(repoAPI))
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%s", port),
