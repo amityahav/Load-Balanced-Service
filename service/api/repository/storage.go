@@ -8,9 +8,7 @@ import (
 )
 
 type API struct {
-	db              *ent.Client
-	RegisterService *RegisterService
-	LoginService    *LoginService
+	db *ent.Client
 }
 
 func NewAPI() *API {
@@ -26,14 +24,10 @@ func NewAPI() *API {
 	}
 
 	// Init services
-	registerService := RegisterService{db: client}
-	loginService := LoginService{db: client}
 
 	// Build Repository API
 	api := API{
-		db:              client,
-		RegisterService: &registerService,
-		LoginService:    &loginService,
+		db: client,
 	}
 	return &api
 }
