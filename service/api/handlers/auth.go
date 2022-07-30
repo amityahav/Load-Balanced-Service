@@ -22,8 +22,8 @@ func NewAuthHandler() *authHandler {
 }
 
 func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.Header["api_key"] != nil {
-		if r.Header["api_key"][0] == h.apiKey {
+	if r.Header["Api_key"] != nil {
+		if r.Header["Api_key"][0] == h.apiKey {
 			token, err := h.createJWT()
 			if err != nil {
 				log.Println(err.Error())
@@ -77,6 +77,9 @@ func (h *authHandler) ValidateJWT(next http.Handler) http.Handler {
 			}
 
 			next.ServeHTTP(w, r)
+		} else {
+			w.WriteHeader(http.StatusUnauthorized)
+			_, _ = w.Write([]byte("Token is required"))
 		}
 	})
 }

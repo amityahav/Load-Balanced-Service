@@ -3,6 +3,7 @@ version : '3'
 services:
   db:
     image: mysql:5.7
+    platform: linux/x86_64
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
@@ -14,6 +15,7 @@ services:
 
   haproxy:
     image: haproxy:alpine
+    platform: linux/x86_64
     container_name: haproxy
     restart: always
     depends_on:
@@ -27,6 +29,7 @@ services:
 
   instance1:
     build: ./service
+    restart: always
     command: "5000"
     ports:
       - "5000:5000"
@@ -37,6 +40,7 @@ services:
 
   instance2:
     build: ./service
+    restart: always
     command: "5001"
     ports:
       - "5001:5001"
@@ -47,6 +51,7 @@ services:
 
   instance3:
     build: ./service
+    restart: always
     command: "5002"
     ports:
       - "5002:5002"

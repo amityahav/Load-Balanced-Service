@@ -12,7 +12,8 @@ type API struct {
 }
 
 func NewAPI() *API {
-	client, err := ent.Open("mysql", "root:root@tcp(localhost:3306)/db?parseTime=True")
+	// DB's URL should be `db:3306` when deploying everything via Docker.
+	client, err := ent.Open("mysql", "root:root@tcp(db:3306)/db?parseTime=True")
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)
 	}
@@ -31,14 +32,3 @@ func NewAPI() *API {
 	}
 	return &api
 }
-
-//
-//func (a *API) verifyLogin(handler *http.Handler) http.HandlerFunc {
-//	return func(w http.ResponseWriter, r *http.Request) {
-//		cookie, _ := r.Cookie("username")
-//		if cookie.Value == "amityahav" {
-//			handle
-//		}
-//	}
-//
-//}
